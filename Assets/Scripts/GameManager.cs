@@ -3,6 +3,8 @@ using UnityEngine;
 using TMPro;
 using System;
 using System.IO;
+using UnityEngine.Video;
+
 
 public class GameManager : MonoBehaviour
 {
@@ -11,6 +13,8 @@ public class GameManager : MonoBehaviour
  public string morseText, morseNum, toEncrypt, textEncrypted;
  public List<int> numToEncrypt = new List<int>();
  public List<string> splitedMorse = new List<string>();
+
+ public VideoPlayer video;
 
  public Dictionary<char, string> codeMorse = new Dictionary<char, string>() {
     {'A' ,".-"},{'B' ,"-..."},{'C' ,"-.-."},{'D' ,"-.."},{'E' ,"."},{'F' ,"..-."},{'G' ,"--."},
@@ -52,8 +56,15 @@ public class GameManager : MonoBehaviour
         createTextEncrypted();
       }
       else { textOutput.text = "Por favor inserte un Texto para encriptar"; }
-
+      StartVideo();
    }
+
+   void StartVideo()
+   {
+      video.gameObject.SetActive(true);
+      video.Play();
+   }
+
 
    void reverse()
    {
@@ -62,7 +73,7 @@ public class GameManager : MonoBehaviour
       Array.Reverse(arrayNum);
       for(int i= 0; i< morseNum.Length; i++)
       {
-         numToEncrypt.Add(Int32.Parse(arrayNum[i].ToString()));
+         numToEncrypt.Add(Int16.Parse(arrayNum[i].ToString()));
       }    
    }
 
