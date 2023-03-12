@@ -56,10 +56,10 @@ public class GameManager : MonoBehaviour
         createTextEncrypted();
       }
       else { textOutput.text = "Por favor inserte un Texto para encriptar"; }
-      StartVideo();
+      StartGlitch();
    }
 
-   void StartVideo()
+   void StartGlitch()
    {
       video.gameObject.SetActive(true);
       video.Play();
@@ -130,7 +130,8 @@ public class GameManager : MonoBehaviour
 
    public void TextEncrypted()
    { 
-      textEncrypt.text = textEncrypted; 
+      textEncrypt.text = textEncrypted;
+      StartGlitch();
    } 
 
    public void Exit()
