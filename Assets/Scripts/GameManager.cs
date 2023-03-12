@@ -15,9 +15,10 @@ public class GameManager : MonoBehaviour
  public Dictionary<char, string> codeMorse = new Dictionary<char, string>() {
     {'A' ,".-"},{'B' ,"-..."},{'C' ,"-.-."},{'D' ,"-.."},{'E' ,"."},{'F' ,"..-."},{'G' ,"--."},
     {'H' ,"...."},{'I' ,".."},{'J' ,".---"},{'K' ,"-.-"},{'L' ,".-.."},{'M' ,"--"},{'N' ,"-."},
-    {'O' ,"---"},{'P' ,".--"},{'Q' ,"--.-"},{'R' ,".-."},{'S' ,"..."},{'T' ,"-"},{'U' ,"..-"},
+    {'O' ,"---"},{'P' ,".--."},{'Q' ,"--.-"},{'R' ,".-."},{'S' ,"..."},{'T' ,"-"},{'U' ,"..-"},
     {'V' ,"...-"},{'W' ,".--"},{'X' ,"-..-"},{'Y' ,"-.--"},{'Z' ,"--.."},{'_' ,"..--"},
     {'.' ,"---."},{',' ,".-.-"},{'?' ,"----"}};
+
 
  public void readText(string textToEncrypt)
  {  //Leo el texto tiempo real e inicializo variables de entradas
@@ -50,37 +51,36 @@ public class GameManager : MonoBehaviour
         reverse();
         createTextEncrypted();
       }
-      else { textOutput.text = "Inserte un Texto Válido"; }
+      else { textOutput.text = "Por favor inserte un Texto para encriptar"; }
 
    }
 
    void reverse()
    {
-      char[] arrayNum = new char[morseNum.Length -1]; 
+      char[] arrayNum = new char[morseNum.Length]; 
       arrayNum = morseNum.ToCharArray();
       Array.Reverse(arrayNum);
-      for(int i= 0; i<= morseNum.Length-1; i++)
+      for(int i= 0; i< morseNum.Length; i++)
       {
-         numToEncrypt.Add(Int16.Parse(arrayNum[i].ToString()));
+         numToEncrypt.Add(Int32.Parse(arrayNum[i].ToString()));
       }    
    }
 
    void createTextEncrypted()
    {
       int position = 0;
-      for(int i= 0; i<= morseNum.Length-1; i++)
+      for(int i= 0; i< morseNum.Length; i++)
       {     //Divido mi codigo morse generado según los números para encriptar
             splitedMorse.Add(morseText.Substring(position,numToEncrypt[i]));
             position +=numToEncrypt[i];
   
-            //print("Position: " +position + " Num-i: " + numToEncrypt[i]);
+           // print("Position: " +position + " Num-i: " + numToEncrypt[i]);
       }
 
       char keyT = new();
       string valueT = null;
-      int count = 0;
-  
-         while(count < splitedMorse.Count)
+
+         for(int count = 0; count< splitedMorse.Count; count++)
          {
             if(codeMorse.ContainsValue(splitedMorse[count]))
             {
@@ -92,19 +92,39 @@ public class GameManager : MonoBehaviour
                      textEncrypted += keyT; 
                }
             }
-            count++;
-         }   
+         }
+ 
    }
 
    public void saveFile()
    {
-      string newFile = string.Format("{0}/{1].txt",Application.persistentDataPath,"EncryptedText");
-      File.WriteAllText(newFile , textEncrypted);
+      //string newFile = string.Format("{0}/{1}.txt",Application.persistentDataPath,"EncryptedText");
+      //File.WriteAllText(newFile , textEncrypted);
+
+      TextWriter Encripted = new StreamWriter("Assets/Resources/encrypted.txt");
+      Encripted.WriteLine(textEncrypted);
+      Encripted.Close();
+      print("Texto Guardado Correctamente");
+
+   }
+
+   public  void readFile()
+   {
+      TextReader Read = new StreamReader("Assets/Resources/encrypted.txt");
+      toEncrypt = Read.ReadToEnd();
+      textOutput.text = toEncrypt;
+      Read.Close();
+      print("Texto Leido Correctamente");
    }
 
    public void TextEncrypted()
    { 
       textEncrypt.text = textEncrypted; 
    } 
+
+   public void Exit()
+   {
+      Application.Quit();
+   }
 
 }
