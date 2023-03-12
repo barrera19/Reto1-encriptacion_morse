@@ -9,7 +9,7 @@ public class videoEnd : MonoBehaviour
  void Awake()
  {
     videoGlitch = GetComponent<VideoPlayer>();
-    videoGlitch.Play();
+    videoGlitch.Pause();
     videoGlitch.loopPointReached += CheckOver;
  }
 
